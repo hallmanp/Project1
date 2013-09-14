@@ -1,0 +1,62 @@
+
+/**
+ * This class will use a scanner to read in a file-word by word and output the number of times each word is in the document.
+ * 
+ * @author Patrick Hallman 
+ * @version 9/05/13
+ */
+import java.io.File;
+import java.util.Scanner;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.*;
+public class ReadFromFile
+{ 
+//Created 2 ArrayList, one for all the words, and one for the number of times the words occur
+//I just lined up the indexes with each other.
+    ArrayList<String> words= new ArrayList<String>();
+    ArrayList<Integer> counts= new ArrayList<Integer>();
+    public void readIt(Scanner infile)
+    {
+       while(infile.hasNext())
+       {
+           String word=infile.next();
+           word=word.toLowerCase(); //This caused all the words to be set to lower case
+           word=word.replaceAll("\\W", ""); //I found this very useful in removing all the unneccessary elements
+           if(!words.contains(word)) //If the word wasn't already in the ArrayList words, I would add it.
+           {
+              int i=0;
+              words.add(word);
+              counts.add(i); 
+           }
+           counts.set(words.indexOf(word),counts.get(words.indexOf(word))+1); //This added to the count for every word if it happened to appear again
+       }
+       for(int i=0;i<words.size();i++) //I used this to print out everything, I could of chose counts as my array to go through too because they are the same size.
+       {
+          System.out.println("WORD: "+words.get(i));
+          System.out.println("COUNT: "+counts.get(i)); 
+       }
+    }
+    
+    public static void main(String [] args)
+    {
+        if(args.length<1)
+        {
+          System.out.println("You are a bad person. Give a filename!");
+        }
+        else
+        {
+            File fileToRead =new File(args[0]);
+            try
+            {
+              Scanner in = new Scanner(fileToRead);
+              ReadFromFile mainObject = new ReadFromFile();
+              mainObject.readIt(in);
+            }
+            catch(IOException e)
+            {
+              System.out.println("Uh oh, file error! "+ e);
+            }
+        }
+    } 
+}
